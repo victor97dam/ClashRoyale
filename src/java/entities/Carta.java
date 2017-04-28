@@ -148,7 +148,9 @@ public class Carta implements Serializable {
 
     @Override
     public String toString() {
-        return "entities.Carta[ nombre=" + nombre + " ]";
+        return "Carta{" + "nombre=" + nombre + ", vida=" + vida + ", ataque=" + ataque + ", velocidad=" + velocidad + ", elixir=" + elixir + ", categoria=" + categoria + '}';
     }
+
+    
     
 }

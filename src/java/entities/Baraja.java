@@ -129,7 +129,10 @@ public class Baraja implements Serializable {
 
     @Override
     public String toString() {
-        return "entities.Baraja[ barajaPK=" + barajaPK + " ]";
+        return "Baraja{" + "barajaPK=" + barajaPK + ", nivel=" + nivel + ", cantidad=" + cantidad + ", carta1=" + carta1 + ", jugador1=" + jugador1 + '}';
     }
+
+    
+    
     
 }

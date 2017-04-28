@@ -135,7 +135,9 @@ public class Jugador implements Serializable {
 
     @Override
     public String toString() {
-        return "entities.Jugador[ nombre=" + nombre + " ]";
+        return "Jugador{" + "nombre=" + nombre + ", nivel=" + nivel + ", oro=" + oro + ", password=" + password + ", barajaCollection=" + barajaCollection + '}';
     }
+
+   
     
 }

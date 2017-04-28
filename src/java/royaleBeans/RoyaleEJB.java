@@ -5,7 +5,12 @@
  */
 package royaleBeans;
 
+import entities.Carta;
+import entities.Jugador;
 import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceUnit;
 
 /**
  *
@@ -14,6 +19,34 @@ import javax.ejb.Stateless;
 @Stateless
 public class RoyaleEJB {
 
-    // Add business logic below. (Right-click in editor and choose
-    // "Insert Code > Add Business Method")
+     @PersistenceUnit
+    EntityManagerFactory emf;
+     public boolean insertarJugador(Jugador c) {
+        if (!existeJugador(c)) {
+            EntityManager em = emf.createEntityManager();
+            em.persist(c);
+//        em.flush();
+            em.close();
+            return true;
+        } else {
+            return false;
+        }
+    }
+     
+     public boolean existeJugador(Jugador c) {
+        EntityManager em = emf.createEntityManager();
+        Jugador encontrada = em.find(Jugador.class, c.getNombre());
+        em.close();
+        return encontrada != null;
+    }
+     
+       public Jugador getPlayerByName(String name) {
+        return emf.createEntityManager().find(Jugador.class, name);
+    }
+       
+        public Carta getCartaByName(String name) {
+        return emf.createEntityManager().find(Carta.class, name);
+    }
+       
+     
 }
