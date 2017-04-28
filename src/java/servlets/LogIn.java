@@ -5,24 +5,22 @@
  */
 package servlets;
 
-import royaleBeans.RoyaleEJB;
+import entities.Jugador;
 import java.io.IOException;
 import java.io.PrintWriter;
-import javax.ejb.EJB;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import static servlets.UserDAO.STATUS_FAIL;
+import static servlets.UserDAO.STATUS_OK;
 
 /**
  *
  * @author DAM
  */
-@WebServlet(name = "AltaJugador", urlPatterns = {"/AltaJugador"})
-public class AltaJugador extends HttpServlet {
- @EJB
-    RoyaleEJB miEjb;
+public class LogIn extends HttpServlet {
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -32,32 +30,13 @@ public class AltaJugador extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-   protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Alta Entrenador</title>");
-            out.println("</head>");
-            out.println("<body>");
-            // Recogemos las variables del formulario
-            String name = request.getParameter("name");
-            int pokeballs = Integer.parseInt(request.getParameter("pokeballs"));
-            int potions = Integer.parseInt(request.getParameter("potions"));
-            
-            Jugdor e = new Jugador();
-            if (miEjb.insertarEntrenador(e)) {
-                out.println("Entrenador dado de alta");
-            } else {
-                out.println("Error: Nombre de entrenador ya está en uso.");
-            }
-            out.println("<p><a href=\"index.html\">Volver al menú principal</a></p>");
-            out.println("</body>");
-            out.println("</html>");
-        }
+        String usuario = request.getParameter("usuario");
+        String pass = request.getParameter("password");
+        request.getSession(true).setAttribute("nombre", usuario);
+        response.sendRedirect(request.getContextPath() + "/main.jsp");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

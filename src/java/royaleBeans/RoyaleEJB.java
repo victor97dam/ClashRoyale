@@ -22,15 +22,11 @@ public class RoyaleEJB {
      @PersistenceUnit
     EntityManagerFactory emf;
      public boolean insertarJugador(Jugador c) {
-        if (!existeJugador(c)) {
             EntityManager em = emf.createEntityManager();
             em.persist(c);
 //        em.flush();
             em.close();
             return true;
-        } else {
-            return false;
-        }
     }
      
      public boolean existeJugador(Jugador c) {
