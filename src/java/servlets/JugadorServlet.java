@@ -8,18 +8,27 @@ package servlets;
 import entities.Jugador;
 import java.io.IOException;
 import java.io.PrintWriter;
+import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import static servlets.UserDAO.STATUS_FAIL;
-import static servlets.UserDAO.STATUS_OK;
-
+import royaleBeans.RoyaleEJB;
+import Util.MD5;
+import javax.servlet.annotation.WebServlet;
 /**
  *
  * @author DAM
  */
-public class LogIn extends HttpServlet {
+@WebServlet(name = "JugadorServlet", urlPatterns = {"/JugadorServlet"})
+
+public class JugadorServlet extends HttpServlet {
+
+    @EJB
+    RoyaleEJB RoyaleEJB;
+
+    public static final String STATUS_OK = "Jugador Creado";
+    public static final String STATUS_FAIL = "Error Jugador no Creado";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -33,10 +42,30 @@ public class LogIn extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String usuario = request.getParameter("usuario");
-        String pass = request.getParameter("password");
-        request.getSession(true).setAttribute("nombre", usuario);
-        response.sendRedirect(request.getContextPath() + "/main.jsp");
+        if ("Login".equals(request.getParameter("action"))) {
+            String usuario = request.getParameter("usuario");
+            String pwd = MD5.getMD5(request.getParameter("password"));
+            if (RoyaleEJB.login(usuario, pwd)) {
+                request.setAttribute("status", STATUS_OK);
+                request.getSession(true).setAttribute("user", usuario);
+                request.getRequestDispatcher("/Main.jsp").forward(request, response);
+            } else {
+                request.setAttribute("status", STATUS_FAIL);
+                request.getRequestDispatcher("/login.jsp").forward(request, response);
+            }
+        } else if ("Crear".equals(request.getParameter("action"))) {
+            String usuario = request.getParameter("usuario");
+            String password = MD5.getMD5(request.getParameter("password"));
+            Jugador j = new Jugador(usuario, 1, 0, password);
+            if (RoyaleEJB.insertarJugador(j)) {
+
+                request.setAttribute("status", STATUS_OK);
+            } else {
+                request.setAttribute("status", STATUS_FAIL);
+            }
+            request.getRequestDispatcher("/Index.jsp").forward(request, response);
+        }
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

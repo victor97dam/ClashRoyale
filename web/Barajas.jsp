@@ -1,6 +1,6 @@
 <%-- 
-    Document   : Main
-    Created on : 28-abr-2017, 19:40:08
+    Document   : Barajas
+    Created on : 02-may-2017, 18:12:28
     Author     : DAM
 --%>
 
@@ -12,10 +12,6 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <ul>
-            <li><a href="Batalla.jsp">Batalla</a></li>
-            <li><a href="Barajas.jsp"h>Seleccionar Baraja</a></li>
-            <li><a></a></li>
-        </ul>
+        <h1>Hello World!</h1>
     </body>
 </html>

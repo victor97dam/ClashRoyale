@@ -22,12 +22,26 @@ public class RoyaleEJB {
      @PersistenceUnit
     EntityManagerFactory emf;
      public boolean insertarJugador(Jugador c) {
+        if(!existeJugador(c)){
             EntityManager em = emf.createEntityManager();
             em.persist(c);
 //        em.flush();
             em.close();
             return true;
+        }else{
+            return false;
+        }
     }
+     
+    public boolean login(String nombre_usu, String pwd) {
+        Jugador usu = emf.createEntityManager().find(Jugador.class, nombre_usu);
+        if (usu==null) {
+            return false;
+        }else{
+             return true;
+        }
+    }
+
      
      public boolean existeJugador(Jugador c) {
         EntityManager em = emf.createEntityManager();
@@ -43,6 +57,7 @@ public class RoyaleEJB {
         public Carta getCartaByName(String name) {
         return emf.createEntityManager().find(Carta.class, name);
     }
+        
        
      
 }

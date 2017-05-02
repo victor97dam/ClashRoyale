@@ -2,19 +2,11 @@
 <web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
     <servlet>
         <servlet-name>CrearUsuario</servlet-name>
-        <servlet-class>servlets.UserDAO</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>LogIn</servlet-name>
-        <servlet-class>servlets.LogIn</servlet-class>
+        <servlet-class>servlets.JugadorServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>CrearUsuario</servlet-name>
         <url-pattern>/CrearUsuario</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>LogIn</servlet-name>
-        <url-pattern>/LogIn</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

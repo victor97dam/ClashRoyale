@@ -13,10 +13,10 @@
     </head>
     <body>
         <h1>Hello World!</h1>
-        <form action="Login" method="POST">
+        <form action="JugadorServlet" method="POST">
             <span>Nombre:</span><input type="text" name="usuario" required>
             <span>Password:</span><input type="password" name="password" required>
-            <input type="submit" value="Login" name="Login" >
+            <input type="submit" value="Login" name="action" >
         </form>
     </body>
 </html>
