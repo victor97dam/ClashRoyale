@@ -5,8 +5,10 @@
  */
 package royaleBeans;
 
+import entities.Baraja;
 import entities.Carta;
 import entities.Jugador;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -19,45 +21,53 @@ import javax.persistence.PersistenceUnit;
 @Stateless
 public class RoyaleEJB {
 
-     @PersistenceUnit
-    EntityManagerFactory emf;
-     public boolean insertarJugador(Jugador c) {
-        if(!existeJugador(c)){
-            EntityManager em = emf.createEntityManager();
+    @PersistenceUnit
+    EntityManagerFactory EntityManager;
+
+    public boolean insertarJugador(Jugador c) {
+        if (!existeJugador(c)) {
+            EntityManager em = EntityManager.createEntityManager();
             em.persist(c);
-//        em.flush();
             em.close();
             return true;
-        }else{
+        } else {
             return false;
-        }
-    }
-     
-    public boolean login(String nombre_usu, String pwd) {
-        Jugador usu = emf.createEntityManager().find(Jugador.class, nombre_usu);
-        if (usu==null) {
-            return false;
-        }else{
-             return true;
         }
     }
 
-     
-     public boolean existeJugador(Jugador c) {
-        EntityManager em = emf.createEntityManager();
+    public boolean login(String nombre_usu, String pwd) {
+        Jugador usu = EntityManager.createEntityManager().find(Jugador.class, nombre_usu);
+        if (usu == null) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public boolean existeJugador(Jugador c) {
+        EntityManager em = EntityManager.createEntityManager();
         Jugador encontrada = em.find(Jugador.class, c.getNombre());
         em.close();
         return encontrada != null;
     }
-     
-       public Jugador getPlayerByName(String name) {
-        return emf.createEntityManager().find(Jugador.class, name);
+
+    public Jugador getPlayerByName(String name) {
+        return EntityManager.createEntityManager().find(Jugador.class, name);
     }
-       
-        public Carta getCartaByName(String name) {
-        return emf.createEntityManager().find(Carta.class, name);
+
+    public Carta getCartaByName(String name) {
+        return EntityManager.createEntityManager().find(Carta.class, name);
     }
-        
-       
-     
+
+    public List<Carta> getAllCartas() {
+        List<Carta> TodaslasCartas = EntityManager.createEntityManager().createNamedQuery("Carta.findAll").getResultList();
+        return TodaslasCartas;
+    }
+    
+
+    public List<Baraja> Cartas(Jugador Player) {
+        List<Baraja> BarajasdelJugador = EntityManager.createEntityManager().createNamedQuery("Baraja.findByJugador").setParameter("jugador", Player).getResultList();
+        return BarajasdelJugador;
+    }
+
 }

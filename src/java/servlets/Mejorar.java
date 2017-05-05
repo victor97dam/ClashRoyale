@@ -5,32 +5,31 @@
  */
 package servlets;
 
+import entities.Baraja;
+import entities.Carta;
 import entities.Jugador;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import royaleBeans.RoyaleEJB;
-import Util.MD5;
-import javax.servlet.annotation.WebServlet;
 
 /**
  *
  * @author DAM
  */
-@WebServlet(name = "JugadorServlet", urlPatterns = {"/JugadorServlet"})
+@WebServlet(name = "Mejorar", urlPatterns = {"/Mejorar"})
+public class Mejorar extends HttpServlet {
+    
+        @EJB RoyaleEJB dao;
 
-public class JugadorServlet extends HttpServlet {
-
-    @EJB
-    RoyaleEJB RoyaleEJB;
-
-    public static final String STATUS_OK = "Jugador Creado";
-    public static final String STATUS_FAIL = "Error Jugador no Creado";
-
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -43,30 +42,13 @@ public class JugadorServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        if ("Login".equals(request.getParameter("action"))) {
-            String usuario = request.getParameter("usuario");
-            String pwd = MD5.getMD5(request.getParameter("password"));
-            if (RoyaleEJB.login(usuario, pwd)) {
-                request.setAttribute("status", STATUS_OK);
-                request.getSession(true).setAttribute("user", usuario);
-                request.getRequestDispatcher("/Main.jsp").forward(request, response);
-                
-            } else {
-                request.setAttribute("status", STATUS_FAIL);
-                request.getRequestDispatcher("/login.jsp").forward(request, response);
-            }
-        } else if ("Crear".equals(request.getParameter("action"))) {
-            String usuario = request.getParameter("usuario");
-            String password = MD5.getMD5(request.getParameter("password"));
-            Jugador j = new Jugador(usuario, 1, 0, password);
-            if (RoyaleEJB.insertarJugador(j)) {
-
-                request.setAttribute("status", STATUS_OK);
-            } else {
-                request.setAttribute("status", STATUS_FAIL);
-            }
-            request.getRequestDispatcher("/Index.jsp").forward(request, response);
-        }
+        String Nombreusuario =(String) request.getAttribute("user");
+        Jugador PlayerCurrentSession = new Jugador();
+        PlayerCurrentSession = dao.getPlayerByName(Nombreusuario);
+        List<Baraja> cartasbyplayer = new ArrayList<>();
+        cartasbyplayer = dao.Cartas(PlayerCurrentSession);
+        request.setAttribute("CartasJugador", cartasbyplayer);
+        request.getRequestDispatcher("/Mejorar.jsp").forward(request, response);
 
     }
 

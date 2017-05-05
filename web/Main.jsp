@@ -12,10 +12,18 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <ul>
-            <li><a href="Batalla.jsp">Batalla</a></li>
-            <li><a href="Barajas.jsp"h>Seleccionar Baraja</a></li>
-            <li><a></a></li>
-        </ul>
+        <form action="Batalla">
+            <input type="submit" value="Batalla" name="action">
+        </form>
+        <form action="Barajas">
+            <input type="submit" value="Seleccionar Baraja" name="action">
+        </form>
+        <form action="ComprarCartas">
+            <input type="submit" value="Comprar Cartas">
+        </form>
+        <form action="Mejorar">
+            <input type="submit" value="Mejorar Cartas" name="action">
+        </form>
+
     </body>
 </html>
