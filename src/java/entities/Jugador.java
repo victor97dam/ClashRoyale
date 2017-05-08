@@ -23,18 +23,19 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author DAM
+ * @author Sergio
  */
 @Entity
-@Table(name = "Jugador")
+@Table(name = "jugador")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Jugador.findAll", query = "SELECT j FROM Jugador j"),
-    @NamedQuery(name = "Jugador.findByNombre", query = "SELECT j FROM Jugador j WHERE j.nombre = :nombre"),
-    @NamedQuery(name = "Jugador.findByNivel", query = "SELECT j FROM Jugador j WHERE j.nivel = :nivel"),
-    @NamedQuery(name = "Jugador.findByOro", query = "SELECT j FROM Jugador j WHERE j.oro = :oro"),
-    @NamedQuery(name = "Jugador.findByPassword", query = "SELECT j FROM Jugador j WHERE j.password = :password")})
+    @NamedQuery(name = "Jugador.findAll", query = "SELECT j FROM Jugador j")
+    , @NamedQuery(name = "Jugador.findByNombre", query = "SELECT j FROM Jugador j WHERE j.nombre = :nombre")
+    , @NamedQuery(name = "Jugador.findByNivel", query = "SELECT j FROM Jugador j WHERE j.nivel = :nivel")
+    , @NamedQuery(name = "Jugador.findByOro", query = "SELECT j FROM Jugador j WHERE j.oro = :oro")
+    , @NamedQuery(name = "Jugador.findByPassword", query = "SELECT j FROM Jugador j WHERE j.password = :password")})
 public class Jugador implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -135,9 +136,7 @@ public class Jugador implements Serializable {
 
     @Override
     public String toString() {
-        return "Jugador{" + "nombre=" + nombre + ", nivel=" + nivel + ", oro=" + oro + ", password=" + password + ", barajaCollection=" + barajaCollection + '}';
+        return "entities.Jugador[ nombre=" + nombre + " ]";
     }
-
-   
     
 }

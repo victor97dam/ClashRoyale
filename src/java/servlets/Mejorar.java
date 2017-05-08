@@ -42,11 +42,11 @@ public class Mejorar extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String Nombreusuario =(String) request.getAttribute("user");
+        String Nombreusuario = (String) request.getSession(true).getAttribute("user");
         Jugador PlayerCurrentSession = new Jugador();
-        PlayerCurrentSession = dao.getPlayerByName(Nombreusuario);
+        //dao.getPlayerByName(Nombreusuario);
         List<Baraja> cartasbyplayer = new ArrayList<>();
-        cartasbyplayer = dao.Cartas(PlayerCurrentSession);
+        cartasbyplayer = dao.Cartas(Nombreusuario);
         request.setAttribute("CartasJugador", cartasbyplayer);
         request.getRequestDispatcher("/Mejorar.jsp").forward(request, response);
 

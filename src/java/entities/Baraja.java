@@ -20,18 +20,19 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author DAM
+ * @author Sergio
  */
 @Entity
-@Table(name = "Baraja")
+@Table(name = "baraja")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Baraja.findAll", query = "SELECT b FROM Baraja b"),
-    @NamedQuery(name = "Baraja.findByJugador", query = "SELECT b FROM Baraja b WHERE b.barajaPK.jugador = :jugador"),
-    @NamedQuery(name = "Baraja.findByCarta", query = "SELECT b FROM Baraja b WHERE b.barajaPK.carta = :carta"),
-    @NamedQuery(name = "Baraja.findByNivel", query = "SELECT b FROM Baraja b WHERE b.nivel = :nivel"),
-    @NamedQuery(name = "Baraja.findByCantidad", query = "SELECT b FROM Baraja b WHERE b.cantidad = :cantidad")})
+    @NamedQuery(name = "Baraja.findAll", query = "SELECT b FROM Baraja b")
+    , @NamedQuery(name = "Baraja.findByJugador", query = "SELECT b FROM Baraja b WHERE b.barajaPK.jugador = :jugador")
+    , @NamedQuery(name = "Baraja.findByCarta", query = "SELECT b FROM Baraja b WHERE b.barajaPK.carta = :carta")
+    , @NamedQuery(name = "Baraja.findByNivel", query = "SELECT b FROM Baraja b WHERE b.nivel = :nivel")
+    , @NamedQuery(name = "Baraja.findByCantidad", query = "SELECT b FROM Baraja b WHERE b.cantidad = :cantidad")})
 public class Baraja implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected BarajaPK barajaPK;
@@ -129,10 +130,7 @@ public class Baraja implements Serializable {
 
     @Override
     public String toString() {
-        return "Baraja{" + "barajaPK=" + barajaPK + ", nivel=" + nivel + ", cantidad=" + cantidad + ", carta1=" + carta1 + ", jugador1=" + jugador1 + '}';
+        return "entities.Baraja[ barajaPK=" + barajaPK + " ]";
     }
-
-    
-    
     
 }

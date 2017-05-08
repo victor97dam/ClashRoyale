@@ -44,13 +44,12 @@ public class JugadorServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         if ("Login".equals(request.getParameter("action"))) {
-            String usuario = request.getParameter("usuario");
+            String user = request.getParameter("usuario");
             String pwd = MD5.getMD5(request.getParameter("password"));
-            if (RoyaleEJB.login(usuario, pwd)) {
+            if (RoyaleEJB.login(user, pwd)) {
                 request.setAttribute("status", STATUS_OK);
-                request.getSession(true).setAttribute("user", usuario);
+                request.getSession(true).setAttribute("user", user);
                 request.getRequestDispatcher("/Main.jsp").forward(request, response);
-                
             } else {
                 request.setAttribute("status", STATUS_FAIL);
                 request.getRequestDispatcher("/login.jsp").forward(request, response);

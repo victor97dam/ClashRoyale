@@ -57,6 +57,10 @@ public class RoyaleEJB {
 
     public Carta getCartaByName(String name) {
         return EntityManager.createEntityManager().find(Carta.class, name);
+        }
+    public List<Jugador> InfoJugador (String name){
+        List<Jugador> Info = EntityManager.createEntityManager().createNamedQuery("Jugador.findByNombre").setParameter("nombre", name).getResultList();
+        return Info;
     }
 
     public List<Carta> getAllCartas() {
@@ -66,6 +70,12 @@ public class RoyaleEJB {
     
 
     public List<Baraja> Cartas(Jugador Player) {
+        return null;
+    }
+    
+
+ 
+    public List<Baraja> Cartas(String Player) {
         List<Baraja> BarajasdelJugador = EntityManager.createEntityManager().createNamedQuery("Baraja.findByJugador").setParameter("jugador", Player).getResultList();
         return BarajasdelJugador;
     }
