@@ -17,8 +17,7 @@ import javax.persistence.PersistenceUnit;
 /**
  *
  * @author DAM
- */
-@Stateless
+ */@Stateless
 public class RoyaleEJB {
 
     @PersistenceUnit

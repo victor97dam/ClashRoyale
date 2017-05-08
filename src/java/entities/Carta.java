@@ -6,38 +6,33 @@
 package entities;
 
 import java.io.Serializable;
-import java.util.Collection;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Sergio
+ * @author DAM
  */
 @Entity
-@Table(name = "carta")
+@Table(name = "Carta")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Carta.findAll", query = "SELECT c FROM Carta c")
-    , @NamedQuery(name = "Carta.findByNombre", query = "SELECT c FROM Carta c WHERE c.nombre = :nombre")
-    , @NamedQuery(name = "Carta.findByVida", query = "SELECT c FROM Carta c WHERE c.vida = :vida")
-    , @NamedQuery(name = "Carta.findByAtaque", query = "SELECT c FROM Carta c WHERE c.ataque = :ataque")
-    , @NamedQuery(name = "Carta.findByVelocidad", query = "SELECT c FROM Carta c WHERE c.velocidad = :velocidad")
-    , @NamedQuery(name = "Carta.findByElixir", query = "SELECT c FROM Carta c WHERE c.elixir = :elixir")
-    , @NamedQuery(name = "Carta.findByCategoria", query = "SELECT c FROM Carta c WHERE c.categoria = :categoria")})
+    @NamedQuery(name = "Carta.findAll", query = "SELECT c FROM Carta c"),
+    @NamedQuery(name = "Carta.findByNombre", query = "SELECT c FROM Carta c WHERE c.nombre = :nombre"),
+    @NamedQuery(name = "Carta.findByVida", query = "SELECT c FROM Carta c WHERE c.vida = :vida"),
+    @NamedQuery(name = "Carta.findByAtaque", query = "SELECT c FROM Carta c WHERE c.ataque = :ataque"),
+    @NamedQuery(name = "Carta.findByVelocidad", query = "SELECT c FROM Carta c WHERE c.velocidad = :velocidad"),
+    @NamedQuery(name = "Carta.findByElixir", query = "SELECT c FROM Carta c WHERE c.elixir = :elixir"),
+    @NamedQuery(name = "Carta.findByCategoria", query = "SELECT c FROM Carta c WHERE c.categoria = :categoria")})
 public class Carta implements Serializable {
-
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -66,8 +61,6 @@ public class Carta implements Serializable {
     @Size(min = 1, max = 90)
     @Column(name = "categoria")
     private String categoria;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "carta1")
-    private Collection<Baraja> barajaCollection;
 
     public Carta() {
     }
@@ -133,15 +126,6 @@ public class Carta implements Serializable {
         this.categoria = categoria;
     }
 
-    @XmlTransient
-    public Collection<Baraja> getBarajaCollection() {
-        return barajaCollection;
-    }
-
-    public void setBarajaCollection(Collection<Baraja> barajaCollection) {
-        this.barajaCollection = barajaCollection;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -164,7 +148,9 @@ public class Carta implements Serializable {
 
     @Override
     public String toString() {
-        return "entities.Carta[ nombre=" + nombre + " ]";
+        return "Carta{" + "nombre=" + nombre + ", vida=" + vida + ", ataque=" + ataque + ", velocidad=" + velocidad + ", elixir=" + elixir + ", categoria=" + categoria + '}';
     }
+
+    
     
 }

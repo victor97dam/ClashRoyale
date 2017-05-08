@@ -41,7 +41,7 @@ public class Mejorar extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
+         response.setContentType("text/html;charset=UTF-8");
         String Nombreusuario = (String) request.getSession(true).getAttribute("user");
         Jugador PlayerCurrentSession = new Jugador();
         //dao.getPlayerByName(Nombreusuario);

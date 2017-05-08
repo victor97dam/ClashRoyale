@@ -14,11 +14,10 @@ import javax.validation.constraints.Size;
 
 /**
  *
- * @author Sergio
+ * @author DAM
  */
 @Embeddable
 public class BarajaPK implements Serializable {
-
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 90)
