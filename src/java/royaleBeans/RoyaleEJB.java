@@ -72,7 +72,15 @@ public class RoyaleEJB {
         return null;
     }
     
-
+    
+    public Carta rndmCard(){
+        List<Carta> All = getAllCartas();
+        Carta cartaselect = new Carta();
+        int size = All.size();
+        int rndm = (int) (Math.random() + size+1);
+        cartaselect= All.get(rndm);
+        return cartaselect;
+    }
  
     public List<Baraja> Cartas(String Player) {
         List<Baraja> BarajasdelJugador = EntityManager.createEntityManager().createNamedQuery("Baraja.findByJugador").setParameter("jugador", Player).getResultList();

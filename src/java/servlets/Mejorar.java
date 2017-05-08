@@ -47,7 +47,7 @@ public class Mejorar extends HttpServlet {
         //dao.getPlayerByName(Nombreusuario);
         List<Baraja> cartasbyplayer = new ArrayList<>();
         cartasbyplayer = dao.Cartas(Nombreusuario);
-        request.setAttribute("CartasJugador", cartasbyplayer);
+        request.setAttribute("CartasPropias", cartasbyplayer);
         request.getRequestDispatcher("/Mejorar.jsp").forward(request, response);
 
     }

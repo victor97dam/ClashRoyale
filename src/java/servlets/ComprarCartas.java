@@ -6,6 +6,7 @@
 package servlets;
 
 import entities.Carta;
+import entities.Jugador;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
@@ -37,7 +38,10 @@ public class ComprarCartas extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        String Nombreusuario = (String) request.getSession(true).getAttribute("user");
+        List<Jugador> Player = dao.InfoJugador(Nombreusuario);
         List<Carta> Cartas = dao.getAllCartas();
+        request.setAttribute("InfoUser", Player);
         request.setAttribute("ListaCartas", Cartas);
         request.getRequestDispatcher("/Comprar.jsp").forward(request, response);
     }
