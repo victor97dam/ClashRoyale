@@ -21,43 +21,32 @@
     <body>
         <form action="ComprarCartas" method="POST">
 
-            <c:forEach items="${InfoUser}" var="item">
-                <p> Oro Actual : ${item.oro} </p>
-                    <c:if test="${item.oro == 25}">
-                        <p>ONE</p>
-                    </c:if>
-                    <c:if test="${item.oro == 50}">
-                        <p>TWO</p>
-                    </c:if>
-                    <c:if test="${item.oro >= 100}">
-                        <p>3</p>
-                    </c:if>
-            </c:forEach>
-            <table>
-                <thead>
-                <td>Nombre</td>
-                <td>Vida</td>
-                <td>Ataque</td>
-                <td>Velocidad</td>
-                <td>Elixir</td>
-                <td>Categoría</td>
-                </thead>
-                <tbody>
-                    <c:forEach items="${ListaCartas}" var="cartaslist">
-                        <tr>
-                            <td>${cartaslist.nombre}</td> 
-                            <td>${cartaslist.vida}</td> 
-                            <td>${cartaslist.ataque}</td> 
-                            <td>${cartaslist.velocidad}</td> 
-                            <td>${cartaslist.elixir}</td> 
-                            <td>${cartaslist.categoria}</td>
-                    <input hidden='${cartaslist.nombre}' name="NombreComprado">
-                    <td><input type="submit" value="Comprar"></td>
-                    </tr>
-                </c:forEach>
+            
+            <div class="">
+                <c:forEach items="${InfoUser}" var="item">
+                    <h1>Oro Actual : ${item.oro} </h1>
+                    <div>
 
-                </tbody>
-            </table>
+                        <c:if test="${item.oro >= 25}">
+                            <img src="img/confre.png">
+                            <input name="TipoCofre" type="submit" value="Cofre1">
+                        </c:if>
+                    </div>
+                    <div>
+                        <c:if test="${item.oro >= 50}">
+                            <img src="img/cofre2.png">
+                            <input name="TipoCofre" type="submit" value="Cofre2">
+                        </c:if>
+                    </div>
+                    <div>
+                        <c:if test="${item.oro >= 100}">
+                            <img  src="img/Cofre3.png" alt="Cofre 3" >
+                            <input name="TipoCofre" type="submit" value="Cofre3">
+                        </c:if>
+                    </div>
+                </c:forEach>
+               
         </form>
-    </body>
+    </div>
+</body>
 </html>
