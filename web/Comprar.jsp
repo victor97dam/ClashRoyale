@@ -32,7 +32,6 @@
                     <c:if test="${item.oro >= 100}">
                         <p>3</p>
                     </c:if>
-                    
             </c:forEach>
             <table>
                 <thead>
