@@ -24,8 +24,10 @@ import royaleBeans.RoyaleEJB;
  */
 @WebServlet(name = "ComprarCartas", urlPatterns = {"/ComprarCartas"})
 public class ComprarCartas extends HttpServlet {
-    
-    @EJB RoyaleEJB dao;
+
+    @EJB
+    RoyaleEJB dao;
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -44,9 +46,24 @@ public class ComprarCartas extends HttpServlet {
         request.setAttribute("InfoUser", Player);
         request.setAttribute("ListaCartas", Cartas);
         request.getRequestDispatcher("/Comprar.jsp").forward(request, response);
+        String TipoCofre = request.getParameter("TipoCofre");
+        switch (TipoCofre) {
+            case "Cofre1":
+                Carta premio = new Carta();
+                premio = dao.rndmCard();
+                dao.
+                //daoentra
+                break;
+            case "Cofre2":
+                //daoentra
+                break;
+            case "Cofre3":
+                //daoentra
+                break;
+            default:
+                break;
+        }
     }
-    
-  
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

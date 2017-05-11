@@ -6,6 +6,7 @@
 package royaleBeans;
 
 import entities.Baraja;
+import static entities.BarajaPK_.carta;
 import entities.Carta;
 import entities.Jugador;
 import java.util.List;
@@ -17,7 +18,8 @@ import javax.persistence.PersistenceUnit;
 /**
  *
  * @author DAM
- */@Stateless
+ */
+@Stateless
 public class RoyaleEJB {
 
     @PersistenceUnit
@@ -30,6 +32,18 @@ public class RoyaleEJB {
             em.close();
             return true;
         } else {
+            return false;
+        }
+    }
+
+    public boolean insertarCarta(Carta c) {
+        if (!existeCartaBaraja((Baraja) carta)) {
+            EntityManager em = EntityManager.createEntityManager();
+            em.persist(c);
+            em.close();
+            return true;
+        } else {
+            
             return false;
         }
     }
@@ -50,14 +64,22 @@ public class RoyaleEJB {
         return encontrada != null;
     }
 
+    public boolean existeCartaBaraja(Baraja carta) {
+        EntityManager em = EntityManager.createEntityManager();
+        Baraja encontrada = em.find(Baraja.class, carta.getCarta1().getNombre());
+        em.clear();
+        return encontrada != null;
+    }
+
     public Jugador getPlayerByName(String name) {
         return EntityManager.createEntityManager().find(Jugador.class, name);
     }
 
     public Carta getCartaByName(String name) {
         return EntityManager.createEntityManager().find(Carta.class, name);
-        }
-    public List<Jugador> InfoJugador (String name){
+    }
+
+    public List<Jugador> InfoJugador(String name) {
         List<Jugador> Info = EntityManager.createEntityManager().createNamedQuery("Jugador.findByNombre").setParameter("nombre", name).getResultList();
         return Info;
     }
@@ -66,22 +88,20 @@ public class RoyaleEJB {
         List<Carta> TodaslasCartas = EntityManager.createEntityManager().createNamedQuery("Carta.findAll").getResultList();
         return TodaslasCartas;
     }
-    
 
     public List<Baraja> Cartas(Jugador Player) {
         return null;
     }
-    
-    
-    public Carta rndmCard(){
+
+    public Carta rndmCard() {
         List<Carta> All = getAllCartas();
         Carta cartaselect = new Carta();
         int size = All.size();
-        int rndm = (int) (Math.random() + size+1);
-        cartaselect= All.get(rndm);
+        int rndm = (int) (Math.random() + size);
+        cartaselect = (Carta) All.get(rndm);
         return cartaselect;
     }
- 
+
     public List<Baraja> Cartas(String Player) {
         List<Baraja> BarajasdelJugador = EntityManager.createEntityManager().createNamedQuery("Baraja.findByJugador").setParameter("jugador", Player).getResultList();
         return BarajasdelJugador;
