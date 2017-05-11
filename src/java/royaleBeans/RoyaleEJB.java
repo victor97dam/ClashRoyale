@@ -3,108 +3,199 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package royaleBeans;
+package beans;
 
-import entities.Baraja;
-import static entities.BarajaPK_.carta;
-import entities.Carta;
-import entities.Jugador;
+import entities.Pokemon;
+import entities.Trainer;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceUnit;
+import javax.persistence.Query;
 
 /**
  *
  * @author DAM
  */
 @Stateless
-public class RoyaleEJB {
+public class StukemonEJB {
 
     @PersistenceUnit
-    EntityManagerFactory EntityManager;
+    EntityManagerFactory emf;
 
-    public boolean insertarJugador(Jugador c) {
-        if (!existeJugador(c)) {
-            EntityManager em = EntityManager.createEntityManager();
-            em.persist(c);
+    public boolean insertarEntrenador(Trainer t) {
+        if (!TrainerExists(t)) {
+            EntityManager em = emf.createEntityManager();
+            em.persist(t);
             em.close();
             return true;
-        } else {
-            return false;
         }
+        return false;
     }
 
-    public boolean insertarCarta(Carta c) {
-        if (!existeCartaBaraja((Baraja) carta)) {
-            EntityManager em = EntityManager.createEntityManager();
-            em.persist(c);
-            em.close();
-            return true;
-        } else {
-            
-            return false;
-        }
+    public Trainer getTrainerByName(String name) {
+        return emf.createEntityManager().find(Trainer.class, name);
     }
 
-    public boolean login(String nombre_usu, String pwd) {
-        Jugador usu = EntityManager.createEntityManager().find(Jugador.class, nombre_usu);
-        if (usu == null) {
-            return false;
-        } else {
-            return true;
-        }
+    public Pokemon getPokemonByName(String name) {
+        return emf.createEntityManager().find(Pokemon.class, name);
     }
 
-    public boolean existeJugador(Jugador c) {
-        EntityManager em = EntityManager.createEntityManager();
-        Jugador encontrada = em.find(Jugador.class, c.getNombre());
+    public boolean TrainerExists(Trainer T) {
+        EntityManager em = emf.createEntityManager();
+        Trainer search = em.find(Trainer.class, T.getName());
         em.close();
-        return encontrada != null;
+        return search != null;
     }
 
-    public boolean existeCartaBaraja(Baraja carta) {
-        EntityManager em = EntityManager.createEntityManager();
-        Baraja encontrada = em.find(Baraja.class, carta.getCarta1().getNombre());
-        em.clear();
-        return encontrada != null;
+    public boolean PokemonExists(Pokemon P) {
+        EntityManager em = emf.createEntityManager();
+        Trainer search = em.find(Trainer.class, P.getName());
+        em.close();
+        return search != null;
     }
 
-    public Jugador getPlayerByName(String name) {
-        return EntityManager.createEntityManager().find(Jugador.class, name);
+    public boolean insertarPokemon(Pokemon P) {
+        if (!PokemonExists(P)) {
+            EntityManager em = emf.createEntityManager();
+            em.persist(P);
+            em.close();
+            return true;
+        }
+        return false;
     }
 
-    public Carta getCartaByName(String name) {
-        return EntityManager.createEntityManager().find(Carta.class, name);
+    public List<Trainer> SelectAllTrainers() {
+        EntityManager em = emf.createEntityManager();
+        List<Trainer> entrenadores = emf.createEntityManager().createNamedQuery("Trainer.findAll").getResultList();
+        List<Trainer> filterTrainers = new ArrayList<>();
+        for (Trainer t : entrenadores) {
+            if (t.getPokemonCollection().size() < 6) {
+                filterTrainers.add(t);
+            }
+        }
+        em.close();
+        return filterTrainers;
     }
 
-    public List<Jugador> InfoJugador(String name) {
-        List<Jugador> Info = EntityManager.createEntityManager().createNamedQuery("Jugador.findByNombre").setParameter("nombre", name).getResultList();
-        return Info;
+    public List<Pokemon> SelectAllPokemon() {
+
+        EntityManager em = emf.createEntityManager();
+        List<Pokemon> pokemon = emf.createEntityManager().createNamedQuery("Pokemon.findAll").getResultList();
+        em.close();
+        return pokemon;
     }
 
-    public List<Carta> getAllCartas() {
-        List<Carta> TodaslasCartas = EntityManager.createEntityManager().createNamedQuery("Carta.findAll").getResultList();
-        return TodaslasCartas;
+    public boolean BorrarPokemon(Pokemon p) {
+        EntityManager em = emf.createEntityManager();
+        Pokemon pokemon = em.find(Pokemon.class, p.getName());
+        boolean ok = false;
+        if (pokemon != null) {
+            em.remove(pokemon);
+            ok = true;
+        }
+        em.close();
+        return ok;
     }
 
-    public List<Baraja> Cartas(Jugador Player) {
-        return null;
+    public Object FindTrainerByName(String name) {
+
+        return emf.createEntityManager().createNamedQuery("Trainer.findByName").setParameter("name", name).getSingleResult();
+
     }
 
-    public Carta rndmCard() {
-        List<Carta> All = getAllCartas();
-        Carta cartaselect = new Carta();
-        int size = All.size();
-        int rndm = (int) (Math.random() + size);
-        cartaselect = (Carta) All.get(rndm);
-        return cartaselect;
+    public Pokemon SelectPokemonByName(String name) {
+
+        return (Pokemon) emf.createEntityManager().createNamedQuery("Pokemon.findByName").setParameter("name", name).getSingleResult();
     }
 
-    public List<Baraja> Cartas(String Player) {
-        List<Baraja> BarajasdelJugador = EntityManager.createEntityManager().createNamedQuery("Baraja.findByJugador").setParameter("jugador", Player).getResultList();
-        return BarajasdelJugador;
+    public List<Pokemon> SelectPokemonByTrainer(Trainer name) {
+        EntityManager em = emf.createEntityManager();
+        List<Pokemon> allPokemons = em.createNamedQuery("Pokemon.findAll").getResultList();
+        List<Pokemon> pokemonsOk = new ArrayList<>();
+        for (Pokemon pokemon : allPokemons) {
+            if (pokemon.getTrainer().equals(name)) {
+                pokemonsOk.add(pokemon);
+            }
+        }
+        return pokemonsOk;
     }
 
+    public void updatePokemon(Pokemon p) {
+        EntityManager em = emf.createEntityManager();
+        em.merge(p);
+    }
+
+    public void updateTrainer(Trainer t) {
+        EntityManager em = emf.createEntityManager();
+        em.merge(t);
+    }
+
+    public boolean CompraPociones(Trainer t, int pociones) {
+
+        try {
+            EntityManager em = emf.createEntityManager();
+            Trainer trainer = em.find(Trainer.class, t.getName());
+            trainer.setPoints(trainer.getPoints() - (pociones * 10));
+            trainer.setPotions(trainer.getPoints() + pociones);
+            em.persist(trainer);
+            em.close();
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public List<Trainer> TrainerPotion() {
+        EntityManager em = emf.createEntityManager();
+        List<Trainer> entrenadores = emf.createEntityManager().createNamedQuery("Trainer.findAll").getResultList();
+        List<Trainer> entrenadoresconpociones = new ArrayList<>();
+        for (Trainer t : entrenadores) {
+            if (t.getPotions() > 0 && t.getPokemonCollection().size() > 0) {
+                entrenadoresconpociones.add(t);
+            }
+        }
+        return entrenadoresconpociones;
+    }
+
+    public boolean RestarPocion(Trainer t) {
+        if (TrainerExists(t)) {
+            EntityManager em = emf.createEntityManager();
+            Trainer trainer = em.find(Trainer.class, t.getName());
+            trainer.setPoints(trainer.getPotions() - 1);
+            em.persist(trainer);
+            em.close();
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public void EfectoPocion(Pokemon pokemon) {
+
+        EntityManager em = emf.createEntityManager();
+        Pokemon p = em.find(Pokemon.class, pokemon.getName());
+
+        p.setLife(pokemon.getLife() + 50);
+        Trainer trainer = em.find(Trainer.class, p.getTrainer().getName());
+        trainer.setPotions(trainer.getPoints() - 1);
+        em.persist(trainer);
+
+        em.close();
+
+    }
+
+    public List<Pokemon> getPokemonList() {
+        EntityManager em = emf.createEntityManager();
+        Query pokemon = em.createQuery("SELECT p From  Pokemon p ORDER BY p.level DESC, p.life DESC");
+        return pokemon.getResultList();
+    }
+
+    public List<Trainer> getEntrenadorList() {
+        EntityManager em = emf.createEntityManager();
+        Query entrenadores = em.createQuery("SELECT t FROM Trainer t ORDER BY t.points DESC");
+        return entrenadores.getResultList();
+    }
 }
