@@ -51,14 +51,17 @@ public class ComprarCartas extends HttpServlet {
             case "Cofre1":
                 Carta premio = new Carta();
                 premio = dao.rndmCard();
-                dao.
-                //daoentra
+                dao.insertarCarta(premio,Nombreusuario,TipoCofre);
                 break;
             case "Cofre2":
-                //daoentra
+                premio = new Carta();
+                premio = dao.rndmCard();
+                dao.insertarCarta(premio,Nombreusuario,TipoCofre);
                 break;
             case "Cofre3":
-                //daoentra
+                 premio = new Carta();
+                premio = dao.rndmCard();
+                dao.insertarCarta(premio,Nombreusuario,TipoCofre);
                 break;
             default:
                 break;

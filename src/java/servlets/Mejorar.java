@@ -43,13 +43,12 @@ public class Mejorar extends HttpServlet {
             throws ServletException, IOException {
          response.setContentType("text/html;charset=UTF-8");
         String Nombreusuario = (String) request.getSession(true).getAttribute("user");
-        Jugador PlayerCurrentSession = new Jugador();
-        //dao.getPlayerByName(Nombreusuario);
         List<Baraja> cartasbyplayer = new ArrayList<>();
         cartasbyplayer = dao.Cartas(Nombreusuario);
         request.setAttribute("CartasPropias", cartasbyplayer);
         request.getRequestDispatcher("/Mejorar.jsp").forward(request, response);
-
+        String Cartamejorar = request.getParameter("cartaamejorar");
+        dao.mejorarCarta(Cartamejorar, Nombreusuario,cartasbyplayer);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

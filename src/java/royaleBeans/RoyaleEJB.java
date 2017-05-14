@@ -3,169 +3,34 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package beans;
+package royaleBeans;
 
-import entities.Pokemon;
-import entities.Trainer;
-import java.util.ArrayList;
+import entities.Baraja;
+import entities.BarajaPK;
+import static entities.BarajaPK_.carta;
+import entities.Carta;
+import entities.Jugador;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceUnit;
-import javax.persistence.Query;
 
 /**
  *
  * @author DAM
  */
 @Stateless
-public class StukemonEJB {
+public class RoyaleEJB {
 
     @PersistenceUnit
-    EntityManagerFactory emf;
+    EntityManagerFactory EntityManager;
 
-    public boolean insertarEntrenador(Trainer t) {
-        if (!TrainerExists(t)) {
-            EntityManager em = emf.createEntityManager();
-            em.persist(t);
-            em.close();
-            return true;
-        }
-        return false;
-    }
-
-    public Trainer getTrainerByName(String name) {
-        return emf.createEntityManager().find(Trainer.class, name);
-    }
-
-    public Pokemon getPokemonByName(String name) {
-        return emf.createEntityManager().find(Pokemon.class, name);
-    }
-
-    public boolean TrainerExists(Trainer T) {
-        EntityManager em = emf.createEntityManager();
-        Trainer search = em.find(Trainer.class, T.getName());
-        em.close();
-        return search != null;
-    }
-
-    public boolean PokemonExists(Pokemon P) {
-        EntityManager em = emf.createEntityManager();
-        Trainer search = em.find(Trainer.class, P.getName());
-        em.close();
-        return search != null;
-    }
-
-    public boolean insertarPokemon(Pokemon P) {
-        if (!PokemonExists(P)) {
-            EntityManager em = emf.createEntityManager();
-            em.persist(P);
-            em.close();
-            return true;
-        }
-        return false;
-    }
-
-    public List<Trainer> SelectAllTrainers() {
-        EntityManager em = emf.createEntityManager();
-        List<Trainer> entrenadores = emf.createEntityManager().createNamedQuery("Trainer.findAll").getResultList();
-        List<Trainer> filterTrainers = new ArrayList<>();
-        for (Trainer t : entrenadores) {
-            if (t.getPokemonCollection().size() < 6) {
-                filterTrainers.add(t);
-            }
-        }
-        em.close();
-        return filterTrainers;
-    }
-
-    public List<Pokemon> SelectAllPokemon() {
-
-        EntityManager em = emf.createEntityManager();
-        List<Pokemon> pokemon = emf.createEntityManager().createNamedQuery("Pokemon.findAll").getResultList();
-        em.close();
-        return pokemon;
-    }
-
-    public boolean BorrarPokemon(Pokemon p) {
-        EntityManager em = emf.createEntityManager();
-        Pokemon pokemon = em.find(Pokemon.class, p.getName());
-        boolean ok = false;
-        if (pokemon != null) {
-            em.remove(pokemon);
-            ok = true;
-        }
-        em.close();
-        return ok;
-    }
-
-    public Object FindTrainerByName(String name) {
-
-        return emf.createEntityManager().createNamedQuery("Trainer.findByName").setParameter("name", name).getSingleResult();
-
-    }
-
-    public Pokemon SelectPokemonByName(String name) {
-
-        return (Pokemon) emf.createEntityManager().createNamedQuery("Pokemon.findByName").setParameter("name", name).getSingleResult();
-    }
-
-    public List<Pokemon> SelectPokemonByTrainer(Trainer name) {
-        EntityManager em = emf.createEntityManager();
-        List<Pokemon> allPokemons = em.createNamedQuery("Pokemon.findAll").getResultList();
-        List<Pokemon> pokemonsOk = new ArrayList<>();
-        for (Pokemon pokemon : allPokemons) {
-            if (pokemon.getTrainer().equals(name)) {
-                pokemonsOk.add(pokemon);
-            }
-        }
-        return pokemonsOk;
-    }
-
-    public void updatePokemon(Pokemon p) {
-        EntityManager em = emf.createEntityManager();
-        em.merge(p);
-    }
-
-    public void updateTrainer(Trainer t) {
-        EntityManager em = emf.createEntityManager();
-        em.merge(t);
-    }
-
-    public boolean CompraPociones(Trainer t, int pociones) {
-
-        try {
-            EntityManager em = emf.createEntityManager();
-            Trainer trainer = em.find(Trainer.class, t.getName());
-            trainer.setPoints(trainer.getPoints() - (pociones * 10));
-            trainer.setPotions(trainer.getPoints() + pociones);
-            em.persist(trainer);
-            em.close();
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
-    }
-
-    public List<Trainer> TrainerPotion() {
-        EntityManager em = emf.createEntityManager();
-        List<Trainer> entrenadores = emf.createEntityManager().createNamedQuery("Trainer.findAll").getResultList();
-        List<Trainer> entrenadoresconpociones = new ArrayList<>();
-        for (Trainer t : entrenadores) {
-            if (t.getPotions() > 0 && t.getPokemonCollection().size() > 0) {
-                entrenadoresconpociones.add(t);
-            }
-        }
-        return entrenadoresconpociones;
-    }
-
-    public boolean RestarPocion(Trainer t) {
-        if (TrainerExists(t)) {
-            EntityManager em = emf.createEntityManager();
-            Trainer trainer = em.find(Trainer.class, t.getName());
-            trainer.setPoints(trainer.getPotions() - 1);
-            em.persist(trainer);
+    public boolean insertarJugador(Jugador c) {
+        if (!existeJugador(c)) {
+            c.setOro(250);
+            EntityManager em = EntityManager.createEntityManager();
+            em.persist(c);
             em.close();
             return true;
         } else {
@@ -173,29 +38,151 @@ public class StukemonEJB {
         }
     }
 
-    public void EfectoPocion(Pokemon pokemon) {
+    public void mejorarCarta(String Cartamejorar, String Nombre, List cartasplayer) {
+        EntityManager.getCache().evictAll();
+        Carta c = new Carta();
+        c = getCartaByName(Cartamejorar);
+        Jugador jugador = new Jugador();
+        List<Baraja> lista = cartasplayer;
+        for (Baraja barajas : lista) {
+            if (barajas.getCarta1().equals(c)) {
+                BarajaPK bpk = new BarajaPK();
+                bpk.setCarta(Cartamejorar);
+                bpk.setJugador(Nombre);
+                barajas.getBarajaPK();
+                barajas.getCantidad();
+                barajas.getCarta1();
+                barajas.getCantidad();
+                barajas.getNivel();
+                barajas.setCantidad(1);
+                int OroActual = barajas.getJugador1().getOro();
+                OroActual = OroActual - 25;
+                barajas.getJugador1().setOro(OroActual);
+                EntityManager em = EntityManager.createEntityManager();
+                barajas.setNivel(barajas.getNivel() + 1);
+                em.merge(barajas);
+                
+            }
+        }
 
-        EntityManager em = emf.createEntityManager();
-        Pokemon p = em.find(Pokemon.class, pokemon.getName());
+    }
 
-        p.setLife(pokemon.getLife() + 50);
-        Trainer trainer = em.find(Trainer.class, p.getTrainer().getName());
-        trainer.setPotions(trainer.getPoints() - 1);
-        em.persist(trainer);
+    public void insertarCarta(Carta c, String Nombre, String TipoCofre) {
+        EntityManager.getCache().evictAll();
+        boolean existe = false;
+        String CartaName = c.getNombre();
+        Jugador jugador = new Jugador();
+        int coste = 0;
+        switch (TipoCofre) {
+            case "Cofre1":
+                coste = 25;
+                break;
+            case "Cofre2":
+                coste = 50;
+                break;
+            case "Cofre3":
+                coste = 100;
+                break;
+        }
+        jugador = getPlayerByName(Nombre);
+        int OroActual = jugador.getOro();
+        List<Baraja> lista = Cartas(Nombre);
+        for (Baraja barajas : lista) {
+            if (barajas.getCarta1().equals(c)) {
+                BarajaPK bpk = new BarajaPK();
+                bpk.setCarta(CartaName);
+                bpk.setJugador(Nombre);
+                barajas.getBarajaPK();
+                barajas.getCantidad();
+                barajas.getCarta1();
+                barajas.getCantidad();
+                barajas.getNivel();
+                int cantidadActual = barajas.getCantidad();
+                barajas.setCantidad(cantidadActual + 1);
+                OroActual = barajas.getJugador1().getOro();
+                OroActual = OroActual - coste;
+                barajas.getJugador1().setOro(OroActual);
+                EntityManager em = EntityManager.createEntityManager();
+                em.merge(barajas);
+                existe = true;
+            }
+        }
+        if (existe == false) {
 
+            BarajaPK bpk = new BarajaPK();
+            bpk.setCarta(CartaName);
+            bpk.setJugador(Nombre);
+            Baraja BarajaJugador = new Baraja();
+            BarajaJugador.setBarajaPK(bpk);
+            BarajaJugador.setJugador1(jugador);
+            BarajaJugador.setJugador1(jugador);
+            BarajaJugador.setCarta1(c);
+            OroActual = OroActual - coste;
+            BarajaJugador.getJugador1().setOro(OroActual);
+            BarajaJugador.setCantidad(1);
+            BarajaJugador.setNivel(1);
+            EntityManager em = EntityManager.createEntityManager();
+            em.persist(BarajaJugador);
+        }
+    }
+
+    //Cmprb if exist
+    public boolean login(String nombre_usu, String pwd) {
+        Jugador usu = EntityManager.createEntityManager().find(Jugador.class, nombre_usu);
+        if (usu == null) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public boolean existeJugador(Jugador c) {
+        EntityManager em = EntityManager.createEntityManager();
+        Jugador encontrada = em.find(Jugador.class, c.getNombre());
         em.close();
-
+        return encontrada != null;
     }
 
-    public List<Pokemon> getPokemonList() {
-        EntityManager em = emf.createEntityManager();
-        Query pokemon = em.createQuery("SELECT p From  Pokemon p ORDER BY p.level DESC, p.life DESC");
-        return pokemon.getResultList();
+    public Jugador getPlayerByName(String name) {
+        return EntityManager.createEntityManager().find(Jugador.class, name);
     }
 
-    public List<Trainer> getEntrenadorList() {
-        EntityManager em = emf.createEntityManager();
-        Query entrenadores = em.createQuery("SELECT t FROM Trainer t ORDER BY t.points DESC");
-        return entrenadores.getResultList();
+    public Carta getCartaByName(String name) {
+        return EntityManager.createEntityManager().find(Carta.class, name);
     }
+
+    public List<Jugador> InfoJugador(String name) {
+        List<Jugador> Info = EntityManager.createEntityManager().createNamedQuery("Jugador.findByNombre").setParameter("nombre", name).getResultList();
+        return Info;
+    }
+
+    public List<Carta> getAllCartas() {
+        List<Carta> TodaslasCartas = EntityManager.createEntityManager().createNamedQuery("Carta.findAll").getResultList();
+        return TodaslasCartas;
+    }
+
+    public List<Baraja> Cartas(Jugador Player) {
+        return null;
+    }
+
+    public Carta rndmCard() {
+        List<Carta> All = getAllCartas();
+        Carta cartaselect = new Carta();
+        int size = All.size();
+        size = size + 1;
+        int rndm = (int) (Math.random() * size);
+        cartaselect = (Carta) All.get(rndm);
+        return cartaselect;
+    }
+
+    public Carta findBarajaByCarta(Carta cartau) {
+        Carta carta = (Carta) EntityManager.createEntityManager().createNamedQuery("").setParameter("carta", cartau).getSingleResult();
+        return carta;
+    }
+
+    public List<Baraja> Cartas(String Player) {
+        List<Baraja> BarajasdelJugador = EntityManager.createEntityManager().createNamedQuery("Baraja.findByJugador").setParameter("jugador", Player).getResultList();
+        return BarajasdelJugador;
+    }
+
 }
