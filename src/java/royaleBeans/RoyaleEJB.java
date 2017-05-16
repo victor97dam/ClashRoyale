@@ -37,9 +37,21 @@ public class RoyaleEJB {
             return false;
         }
     }
+    
+    public boolean insertarCarta(Carta c){
+        if(!existeCarta(c)){
+            EntityManager em = EntityManager.createEntityManager();
+            em.persist(c);
+            em.close();
+            return true;
+        }else{
+            return false;
+        }
+    }
 
-    public void mejorarCarta(String Cartamejorar, String Nombre, List cartasplayer) {
+    public boolean mejorarCarta(String Cartamejorar, String Nombre, List cartasplayer) {
         EntityManager.getCache().evictAll();
+        boolean resultado = false;
         Carta c = new Carta();
         c = getCartaByName(Cartamejorar);
         Jugador jugador = new Jugador();
@@ -61,13 +73,14 @@ public class RoyaleEJB {
                 EntityManager em = EntityManager.createEntityManager();
                 barajas.setNivel(barajas.getNivel() + 1);
                 em.merge(barajas);
-                
+                resultado = true;
             }
         }
-
+        return resultado;
     }
+    
 
-    public void insertarCarta(Carta c, String Nombre, String TipoCofre) {
+    public boolean insertarCarta(Carta c, String Nombre, String TipoCofre) {
         EntityManager.getCache().evictAll();
         boolean existe = false;
         String CartaName = c.getNombre();
@@ -105,6 +118,7 @@ public class RoyaleEJB {
                 EntityManager em = EntityManager.createEntityManager();
                 em.merge(barajas);
                 existe = true;
+                return true;
             }
         }
         if (existe == false) {
@@ -123,22 +137,32 @@ public class RoyaleEJB {
             BarajaJugador.setNivel(1);
             EntityManager em = EntityManager.createEntityManager();
             em.persist(BarajaJugador);
+            return true;
         }
+        return false;
     }
 
     //Cmprb if exist
     public boolean login(String nombre_usu, String pwd) {
         Jugador usu = EntityManager.createEntityManager().find(Jugador.class, nombre_usu);
-        if (usu == null) {
-            return false;
-        } else {
-            return true;
+         if (usu != null) {
+            if (usu.getPassword().equals(pwd))
+                return true;
         }
+        return false;
+
     }
 
     public boolean existeJugador(Jugador c) {
         EntityManager em = EntityManager.createEntityManager();
         Jugador encontrada = em.find(Jugador.class, c.getNombre());
+        em.close();
+        return encontrada != null;
+    }
+    
+    public boolean existeCarta(Carta c) {
+        EntityManager em = EntityManager.createEntityManager();
+        Carta encontrada = em.find(Carta.class, c.getNombre());
         em.close();
         return encontrada != null;
     }

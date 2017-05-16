@@ -11,6 +11,9 @@
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <jsp:useBean id="CartasPropias" class="java.util.List" scope="request" />
+<jsp:useBean id="submitFail" class="java.lang.String" scope="request"/>
+<jsp:useBean id="submitDone" class="java.lang.String" scope="request"/>
+
 <style>
     .navbar{
         margin-bottom: 0px !important
@@ -24,6 +27,10 @@
         border: none;
         background: none;
     }
+    
+    .comprar{
+        color: #33ff33 !important
+    }
 
 </style>
 <!DOCTYPE html>
@@ -33,6 +40,9 @@
         <title>Clash Royale - Mejorar Cartas</title>
     </head>
     <body>
+        <c:if test="${not empty MejoraFail}">
+                    <script>alert("Error, No se ha podido Mejorar")</script>
+        </c:if>
         <div class="backgroundstyle"></div>
         <nav class="navbar navbar-inverse">
             <div class="container-fluid">
@@ -72,6 +82,7 @@
                             <th style="width: 35%">Nombre</th>
                             <th style="width: 35%">Cantidad</th>
                             <th style="width: 35%">Nivel</th>
+                           
                         </tr>
                     </thead>
 
@@ -83,7 +94,7 @@
                                 <td>${baraja.nivel}</td>
                                 <c:if test="${baraja.cantidad > 9}">
                             <input type="hidden" name="cartaamejorar" value="${baraja.barajaPK.carta}"> 
-                            <td><input type="submit" value="Comprar"></td>
+                            <td><input class="comprar" type="submit" value="Mejorar"></td>
                             </c:if>
                         </tr>
                     </c:forEach>

@@ -6,10 +6,8 @@
 package servlets;
 
 import entities.Carta;
-import entities.Jugador;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -17,18 +15,19 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import royaleBeans.RoyaleEJB;
+import static servlets.JugadorServlet.STATUS_FAIL;
 import static servlets.JugadorServlet.STATUS_OK;
 
 /**
  *
  * @author DAM
  */
-@WebServlet(name = "ComprarCartas", urlPatterns = {"/ComprarCartas"})
-public class ComprarCartas extends HttpServlet {
-
+@WebServlet(name = "CrearCartas", urlPatterns = {"/CrearCartas"})
+public class CrearCartas extends HttpServlet {
+    
     @EJB
     RoyaleEJB dao;
-
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -40,48 +39,22 @@ public class ComprarCartas extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        String Nombreusuario = (String) request.getSession(true).getAttribute("user");
-        List<Jugador> Player = dao.InfoJugador(Nombreusuario);
-        List<Carta> Cartas = dao.getAllCartas();
-        request.setAttribute("InfoUser", Player);
-        request.setAttribute("ListaCartas", Cartas);
-        request.getRequestDispatcher("/Comprar.jsp").forward(request, response);
-        String TipoCofre = request.getParameter("TipoCofre");
-        switch (TipoCofre) {
-            case "Cofre1":
-                Carta premio = new Carta();
-                premio = dao.rndmCard();
-                if (dao.insertarCarta(premio, Nombreusuario, TipoCofre)) {
-                    request.setAttribute("resultado", premio);
-                    request.getRequestDispatcher("/Comprar.jsp").forward(request, response);
-                }else{
-                    
-                }
+        
+        
+       request.getRequestDispatcher("/CrearCartas.jsp").forward(request, response);
 
-                break;
-            case "Cofre2":
-                premio = new Carta();
-                premio = dao.rndmCard();
-                if (dao.insertarCarta(premio, Nombreusuario, TipoCofre)) {
-                    request.setAttribute("resultado", premio);
-                    request.getRequestDispatcher("/Comprar.jsp").forward(request, response);
-                }else{
-                    
-                }
-                break;
-            case "Cofre3":
-                premio = new Carta();
-                premio = dao.rndmCard();
-                if (dao.insertarCarta(premio, Nombreusuario, TipoCofre)) {
-                    request.setAttribute("resultado", premio);
-                    request.getRequestDispatcher("/Comprar.jsp").forward(request, response);
-                }else{
-                    
-                }
-                break;
-            default:
-                break;
+        String nombre = request.getParameter("nombre");
+        String vida = request.getParameter("vida");
+        String ataque = request.getParameter("ataque");
+        String velocidad = request.getParameter("velocidad");
+        String elixir = request.getParameter("elixir");
+        String categoria = request.getParameter("categoria");
+        Carta nuevacarta = new Carta(nombre, Integer.parseInt(vida), Integer.parseInt(ataque), Integer.parseInt(velocidad), Integer.parseInt(elixir), categoria);
+        dao.insertarCarta(nuevacarta);
+        if(dao.insertarCarta(nuevacarta)){
+            request.setAttribute("Message", "Carta Creada");
+        }else{
+            request.setAttribute("Message", "Error Carta no creada");
         }
     }
 

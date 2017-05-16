@@ -51,18 +51,19 @@ public class JugadorServlet extends HttpServlet {
                 request.getSession(true).setAttribute("user", user);
                 request.getRequestDispatcher("/Main.jsp").forward(request, response);
             } else {
-                request.setAttribute("status", STATUS_FAIL);
-                request.getRequestDispatcher("/login.jsp").forward(request, response);
+                request.setAttribute("loginError", "Error al hacer login");
+                request.getRequestDispatcher("/Login.jsp").forward(request, response);
             }
         } else if ("Crear".equals(request.getParameter("action"))) {
             String usuario = request.getParameter("usuario");
             String password = MD5.getMD5(request.getParameter("password"));
             Jugador j = new Jugador(usuario, 1, 0, password);
             if (RoyaleEJB.insertarJugador(j)) {
-
-                request.setAttribute("status", STATUS_OK);
+                request.setAttribute("submitOk", "Usuario Creado");
+                request.getRequestDispatcher("/Login.jsp").forward(request, response);
             } else {
-                request.setAttribute("status", STATUS_FAIL);
+                request.setAttribute("RegistroFail", "No se ha podido crear");
+                request.getRequestDispatcher("/Registro.jsp").forward(request, response);
             }
             request.getRequestDispatcher("/Index.jsp").forward(request, response);
         }
