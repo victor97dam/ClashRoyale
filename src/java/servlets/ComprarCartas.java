@@ -53,10 +53,20 @@ public class ComprarCartas extends HttpServlet {
                 Carta premio = new Carta();
                 premio = dao.rndmCard();
                 if (dao.insertarCarta(premio, Nombreusuario, TipoCofre)) {
-                    request.setAttribute("resultado", premio);
+                    Player = dao.InfoJugador(Nombreusuario);
+                    Cartas = dao.getAllCartas();
+                    request.setAttribute("InfoUser", Player);
+                    request.setAttribute("ListaCartas", Cartas);
+                    request.setAttribute("resultado", premio.getNombre());
                     request.getRequestDispatcher("/Comprar.jsp").forward(request, response);
-                }else{
-                    
+                } else {
+                    Player = dao.InfoJugador(Nombreusuario);
+                    Cartas = dao.getAllCartas();
+                    request.setAttribute("InfoUser", Player);
+                    request.setAttribute("ListaCartas", Cartas);
+                    request.setAttribute("resultado", premio.getNombre());
+                    request.setAttribute("Error", "Error");
+                    request.getRequestDispatcher("/Comprar.jsp").forward(request, response);
                 }
 
                 break;
@@ -64,25 +74,54 @@ public class ComprarCartas extends HttpServlet {
                 premio = new Carta();
                 premio = dao.rndmCard();
                 if (dao.insertarCarta(premio, Nombreusuario, TipoCofre)) {
-                    request.setAttribute("resultado", premio);
+                    Player = dao.InfoJugador(Nombreusuario);
+                    Cartas = dao.getAllCartas();
+                    request.setAttribute("InfoUser", Player);
+                    request.setAttribute("ListaCartas", Cartas);
+                    request.setAttribute("resultado", premio.getNombre());
                     request.getRequestDispatcher("/Comprar.jsp").forward(request, response);
-                }else{
-                    
+                } else {
+                    Player = dao.InfoJugador(Nombreusuario);
+                    Cartas = dao.getAllCartas();
+                    request.setAttribute("InfoUser", Player);
+                    request.setAttribute("ListaCartas", Cartas);
+                    request.setAttribute("Error", "Error");
+                    request.getRequestDispatcher("/Comprar.jsp").forward(request, response);
+
                 }
                 break;
             case "Cofre3":
                 premio = new Carta();
                 premio = dao.rndmCard();
                 if (dao.insertarCarta(premio, Nombreusuario, TipoCofre)) {
-                    request.setAttribute("resultado", premio);
+                    Player = dao.InfoJugador(Nombreusuario);
+                    Cartas = dao.getAllCartas();
+                    request.setAttribute("InfoUser", Player);
+                    request.setAttribute("ListaCartas", Cartas);
+                    request.setAttribute("resultado", premio.getNombre());
                     request.getRequestDispatcher("/Comprar.jsp").forward(request, response);
-                }else{
-                    
+                } else {
+                    Player = dao.InfoJugador(Nombreusuario);
+                    Cartas = dao.getAllCartas();
+                    request.setAttribute("InfoUser", Player);
+                    request.setAttribute("ListaCartas", Cartas);
+                    request.setAttribute("Error", "Error");
+                    request.getRequestDispatcher("/Comprar.jsp").forward(request, response);
                 }
                 break;
             default:
-                break;
+                 Player = dao.InfoJugador(Nombreusuario);
+                    Cartas = dao.getAllCartas();
+                    request.setAttribute("InfoUser", Player);
+                    request.setAttribute("ListaCartas", Cartas);
+                request.getRequestDispatcher("/Comprar.jsp").forward(request, response);
         }
+         Player = dao.InfoJugador(Nombreusuario);
+                    Cartas = dao.getAllCartas();
+                    request.setAttribute("InfoUser", Player);
+                    request.setAttribute("ListaCartas", Cartas);
+        request.getRequestDispatcher("/Comprar.jsp").forward(request, response);
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

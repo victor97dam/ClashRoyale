@@ -10,7 +10,7 @@
 <%@page import="entities.Baraja"%>
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<jsp:useBean id="CartasPropias" class="java.util.List" scope="request" />
+<jsp:useBean id="cartasbyplayer" class="java.util.List" scope="request" />
 <jsp:useBean id="submitFail" class="java.lang.String" scope="request"/>
 <jsp:useBean id="submitDone" class="java.lang.String" scope="request"/>
 
@@ -50,14 +50,19 @@
                     <a class="navbar-brand" href="Main.jsp" >Clash Royale</a>
                 </div>
                 <ul class="nav navbar-nav">
-                    <li class="active">
-                        <form action="Batalla">
-                            <input type="submit" value="Batalla" name="action">
+                    <li>
+                        <form action="CrearCartas">
+                            <input type="submit" value="Crear Cartas" name="action">
                         </form>
                     </li>
                     <li>
                         <form action="ComprarCartas">
                             <input type="submit" value="Comprar Cartas">
+                        </form>
+                    </li>
+                    <li>
+                        <form action="Mejorar">
+                            <input type="submit" value="Mejorar Cartas" name="action">
                         </form>
                     </li>
                 </ul>
@@ -87,12 +92,12 @@
                     </thead>
 
                     <tbody>
-                        <c:forEach var="baraja" items="${CartasPropias}">
+                        <c:forEach var="baraja" items="${cartasbyplayer}">
                             <tr>
                                 <td>${baraja.barajaPK.carta}</td>
                                 <td>${baraja.cantidad}</td>
                                 <td>${baraja.nivel}</td>
-                                <c:if test="${baraja.cantidad > 9}">
+                                <c:if test="${baraja.cantidad > 9 }">
                             <input type="hidden" name="cartaamejorar" value="${baraja.barajaPK.carta}"> 
                             <td><input class="comprar" type="submit" value="Mejorar"></td>
                             </c:if>

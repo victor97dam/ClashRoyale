@@ -46,12 +46,16 @@ public class Mejorar extends HttpServlet {
         String Nombreusuario = (String) request.getSession(true).getAttribute("user");
         List<Baraja> cartasbyplayer = new ArrayList<>();
         cartasbyplayer = dao.Cartas(Nombreusuario);
-        request.setAttribute("CartasPropias", cartasbyplayer);
+        request.setAttribute("cartasbyplayer", cartasbyplayer);
         request.getRequestDispatcher("/Mejorar.jsp").forward(request, response);
         String Cartamejorar = request.getParameter("cartaamejorar");
         if (dao.mejorarCarta(Cartamejorar, Nombreusuario, cartasbyplayer)) {
+            cartasbyplayer = dao.Cartas(Nombreusuario);
+            request.setAttribute("cartasbyplayer", cartasbyplayer);
             request.getRequestDispatcher("/Mejorar.jsp").forward(request, response);
         } else {
+            cartasbyplayer = dao.Cartas(Nombreusuario);
+            request.setAttribute("cartasbyplayer", cartasbyplayer);
             request.setAttribute("MejoraFail", "No se ha podido mejorar");
             request.getRequestDispatcher("/Mejorar.jsp").forward(request, response);
         }

@@ -38,11 +38,6 @@
                     <a class="navbar-brand">Clash Royale</a>
                 </div>
                 <ul class="nav navbar-nav">
-                    <li class="active">
-                        <form action="Batalla">
-                            <input type="submit" value="Batalla" name="action">
-                        </form>
-                    </li>
                     <li>
                         <form action="ComprarCartas">
                             <input type="submit" value="Comprar Cartas">

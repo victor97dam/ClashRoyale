@@ -24,10 +24,10 @@ import static servlets.JugadorServlet.STATUS_OK;
  */
 @WebServlet(name = "CrearCartas", urlPatterns = {"/CrearCartas"})
 public class CrearCartas extends HttpServlet {
-    
+
     @EJB
     RoyaleEJB dao;
-    
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -39,9 +39,8 @@ public class CrearCartas extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        
-       request.getRequestDispatcher("/CrearCartas.jsp").forward(request, response);
+
+        request.getRequestDispatcher("/CrearCartas.jsp").forward(request, response);
 
         String nombre = request.getParameter("nombre");
         String vida = request.getParameter("vida");
@@ -51,10 +50,14 @@ public class CrearCartas extends HttpServlet {
         String categoria = request.getParameter("categoria");
         Carta nuevacarta = new Carta(nombre, Integer.parseInt(vida), Integer.parseInt(ataque), Integer.parseInt(velocidad), Integer.parseInt(elixir), categoria);
         dao.insertarCarta(nuevacarta);
-        if(dao.insertarCarta(nuevacarta)){
+        if (dao.insertarCarta(nuevacarta)) {
             request.setAttribute("Message", "Carta Creada");
-        }else{
+            request.getRequestDispatcher("/CrearCartas.jsp").forward(request, response);
+
+        } else {
             request.setAttribute("Message", "Error Carta no creada");
+            request.getRequestDispatcher("/CrearCartas.jsp").forward(request, response);
+
         }
     }
 
