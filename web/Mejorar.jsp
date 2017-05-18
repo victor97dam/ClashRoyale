@@ -13,6 +13,7 @@
 <jsp:useBean id="cartasbyplayer" class="java.util.List" scope="request" />
 <jsp:useBean id="submitFail" class="java.lang.String" scope="request"/>
 <jsp:useBean id="submitDone" class="java.lang.String" scope="request"/>
+<jsp:useBean id="Jugador" class="java.util.List" scope="request" />
 
 <style>
     .navbar{
@@ -27,7 +28,7 @@
         border: none;
         background: none;
     }
-    
+
     .comprar{
         color: #33ff33 !important
     }
@@ -41,13 +42,13 @@
     </head>
     <body>
         <c:if test="${not empty MejoraFail}">
-                    <script>alert("Error, No se ha podido Mejorar")</script>
+            <script>alert("Error, No se ha podido Mejorar")</script>
         </c:if>
         <div class="backgroundstyle"></div>
         <nav class="navbar navbar-inverse">
             <div class="container-fluid">
                 <div class="navbar-header">
-                    <a class="navbar-brand" href="Main.jsp" >Clash Royale</a>
+                    <a class="navbar-brand" href="#" >Clash Royale</a>
                 </div>
                 <ul class="nav navbar-nav">
                     <li>
@@ -77,36 +78,39 @@
         </nav>
         <div class="container">
             <h2>Cartas Adquiridas</h2>
-            <p>Aquí se mostrarán las cartas que tienes, en caso que puedas mejorarlas que puedas mejorarlas se te mostrará un botton (el coste de mejora es de 25)</p>            
-            <form action="Mejorar" method="POST">
+            <p>Aquí se mostrarán las cartas que tienes, en caso que puedas mejorarlas que puedas mejorarlas se te mostrará un botton (el coste de mejora es de 25)</p>     
+            <c:forEach items="${Jugador}" var="item">
+                <h4>Oro Actual : ${item.oro} </h4>
+                <form action="Mejorar" method="POST">
 
 
-                <table class="table table-striped table-bordered">
-                    <thead  class="thead-inverse">
-                        <tr>
-                            <th style="width: 35%">Nombre</th>
-                            <th style="width: 35%">Cantidad</th>
-                            <th style="width: 35%">Nivel</th>
-                           
-                        </tr>
-                    </thead>
-
-                    <tbody>
-                        <c:forEach var="baraja" items="${cartasbyplayer}">
+                    <table class="table table-striped table-bordered">
+                        <thead  class="thead-inverse">
                             <tr>
-                                <td>${baraja.barajaPK.carta}</td>
-                                <td>${baraja.cantidad}</td>
-                                <td>${baraja.nivel}</td>
-                                <c:if test="${baraja.cantidad > 9 }">
-                            <input type="hidden" name="cartaamejorar" value="${baraja.barajaPK.carta}"> 
-                            <td><input class="comprar" type="submit" value="Mejorar"></td>
-                            </c:if>
-                        </tr>
-                    </c:forEach>
-                    </tbody>
-                </table>
+                                <th style="width: 35%">Nombre</th>
+                                <th style="width: 35%">Cantidad</th>
+                                <th style="width: 35%">Nivel</th>
 
-            </form>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <c:forEach var="baraja" items="${cartasbyplayer}">
+                                <tr>
+                                    <td>${baraja.barajaPK.carta}</td>
+                                    <td>${baraja.cantidad}</td>
+                                    <td>${baraja.nivel}</td>
+                                    <c:if test="${baraja.cantidad > 9 && item.oro >= '25'}">
+                                        <input type="hidden" name="cartaamejorar" value="${baraja.barajaPK.carta}"> 
+                                        <td><input class="comprar" type="submit" value="Mejorar"></td>
+                                    </c:if>
+                            </tr>
+                        </c:forEach>
+                        </tbody>
+                    </table>
+
+                </form>
+            </c:forEach>
         </div>
     </body>
 </html>

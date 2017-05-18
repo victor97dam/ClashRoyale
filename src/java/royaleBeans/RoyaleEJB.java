@@ -37,14 +37,14 @@ public class RoyaleEJB {
             return false;
         }
     }
-    
-    public boolean insertarCarta(Carta c){
-        if(!existeCarta(c)){
+
+    public boolean insertarCarta(Carta c) {
+        if (!existeCarta(c)) {
             EntityManager em = EntityManager.createEntityManager();
             em.persist(c);
             em.close();
             return true;
-        }else{
+        } else {
             return false;
         }
     }
@@ -78,7 +78,6 @@ public class RoyaleEJB {
         }
         return resultado;
     }
-    
 
     public boolean insertarCarta(Carta c, String Nombre, String TipoCofre) {
         EntityManager.getCache().evictAll();
@@ -109,6 +108,13 @@ public class RoyaleEJB {
                 barajas.getCantidad();
                 barajas.getCarta1();
                 barajas.getCantidad();
+                if (coste == 50) {
+                    barajas.setNivel(barajas.getNivel() + 2);
+                } else if (coste == 100) {
+                    barajas.setNivel(barajas.getNivel() + 3);
+                } else if (coste == 50) {
+                    barajas.setNivel(barajas.getNivel() + 1);
+                }
                 barajas.getNivel();
                 int cantidadActual = barajas.getCantidad();
                 barajas.setCantidad(cantidadActual + 1);
@@ -134,7 +140,14 @@ public class RoyaleEJB {
             OroActual = OroActual - coste;
             BarajaJugador.getJugador1().setOro(OroActual);
             BarajaJugador.setCantidad(1);
-            BarajaJugador.setNivel(1);
+            if (coste == 50) {
+                BarajaJugador.setNivel(BarajaJugador.getNivel() + 2);
+            } else if (coste == 100) {
+                BarajaJugador.setNivel(BarajaJugador.getNivel() + 3);
+            } else if (coste == 25) {
+                BarajaJugador.setNivel(1);
+
+            }
             EntityManager em = EntityManager.createEntityManager();
             em.persist(BarajaJugador);
             return true;
@@ -145,9 +158,10 @@ public class RoyaleEJB {
     //Cmprb if exist
     public boolean login(String nombre_usu, String pwd) {
         Jugador usu = EntityManager.createEntityManager().find(Jugador.class, nombre_usu);
-         if (usu != null) {
-            if (usu.getPassword().equals(pwd))
+        if (usu != null) {
+            if (usu.getPassword().equals(pwd)) {
                 return true;
+            }
         }
         return false;
 
@@ -159,7 +173,7 @@ public class RoyaleEJB {
         em.close();
         return encontrada != null;
     }
-    
+
     public boolean existeCarta(Carta c) {
         EntityManager em = EntityManager.createEntityManager();
         Carta encontrada = em.find(Carta.class, c.getNombre());

@@ -44,8 +44,11 @@ public class Mejorar extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String Nombreusuario = (String) request.getSession(true).getAttribute("user");
+        List<Jugador> j = new ArrayList<Jugador>();
+        j = dao.InfoJugador(Nombreusuario);
         List<Baraja> cartasbyplayer = new ArrayList<>();
         cartasbyplayer = dao.Cartas(Nombreusuario);
+        request.setAttribute("Jugador", j);
         request.setAttribute("cartasbyplayer", cartasbyplayer);
         request.getRequestDispatcher("/Mejorar.jsp").forward(request, response);
         String Cartamejorar = request.getParameter("cartaamejorar");

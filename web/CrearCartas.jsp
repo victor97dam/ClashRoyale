@@ -14,7 +14,13 @@
     .navbar{
         margin-bottom: 0px !important
     }
-    ul > li > input{
+   
+    
+    .comprar{
+        color: #33ff33 !important
+    }
+    
+    li > form > input{
         color: white;
         padding: 13px;
         width: 100%;
@@ -23,10 +29,7 @@
         border: none;
         background: none;
     }
-    
-    .comprar{
-        color: #33ff33 !important
-    }
+  
 
 </style>
 <!DOCTYPE html>
@@ -43,17 +46,22 @@
              <nav class="navbar navbar-inverse">
             <div class="container-fluid">
                 <div class="navbar-header">
-                    <a class="navbar-brand" href="Main.jsp" >Clash Royale</a>
+                    <a class="navbar-brand" href="#" >Clash Royale</a>
                 </div>
                 <ul class="nav navbar-nav">
-                    <li class="active">
-                        <form action="Batalla">
-                            <input type="submit" value="Batalla" name="action">
-                        </form>
-                    </li>
                     <li>
                         <form action="ComprarCartas">
                             <input type="submit" value="Comprar Cartas">
+                        </form>
+                    </li>
+                    <li>
+                        <form action="Mejorar">
+                            <input type="submit" value="Mejorar Cartas" name="action">
+                        </form>
+                    </li>
+                    <li>
+                        <form action="CrearCartas">
+                            <input type="submit" value="Crear Cartas" name="action">
                         </form>
                     </li>
                 </ul>
@@ -70,12 +78,12 @@
             <div class="card card-container">
         <form action="CrearCartas" method="POST">
             <%=Message%>
-            <span>Nombre</span><input name="nombre" type="text"><br/>
-            <span>Vida</span><input name="vida" type="number"><br/>
-            <span>Ataque</span><input name="ataque" type="number"><br/>
-            <span>Velocidad</span><input name="velocidad" type="number"><br/>
-            <span>Elixir</span><input name="elixir" type="number"><br/>
-            <span>Categoría</span><input name="categoria" type="text"><br/>
+            <span>Nombre</span><input name="nombre"  type="text"><br/>
+            <span>Vida</span><input name="vida" min="5" type="number"><br/>
+            <span>Ataque</span><input name="ataque" min="5" type="number"><br/>
+            <span>Velocidad</span><input name="velocidad" min="5" type="number"><br/>
+            <span>Elixir</span><input name="elixir" min="5" type="number"><br/>
+            <span>Categoría</span><input name="categoria"  type="text"><br/>
             <input type="submit" value="Crear">
         </form>
             </div>

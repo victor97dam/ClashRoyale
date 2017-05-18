@@ -49,14 +49,12 @@ public class CrearCartas extends HttpServlet {
         String elixir = request.getParameter("elixir");
         String categoria = request.getParameter("categoria");
         Carta nuevacarta = new Carta(nombre, Integer.parseInt(vida), Integer.parseInt(ataque), Integer.parseInt(velocidad), Integer.parseInt(elixir), categoria);
-        dao.insertarCarta(nuevacarta);
         if (dao.insertarCarta(nuevacarta)) {
             request.setAttribute("Message", "Carta Creada");
             request.getRequestDispatcher("/CrearCartas.jsp").forward(request, response);
-
         } else {
             request.setAttribute("Message", "Error Carta no creada");
-            request.getRequestDispatcher("/CrearCartas.jsp").forward(request, response);
+            request.getRequestDispatcher("/Failed.jsp").forward(request, response);
 
         }
     }
